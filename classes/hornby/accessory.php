@@ -8,20 +8,25 @@
  *
  * @author Caveman
  */
-class hornby_train 
+class hornby_accessory 
 {
-	public function __construct($id=NULL)
+	public function __construct()
 	{
 		
 	}
-	public static function factory($id=NULL)
+	public static function factory()
 	{
 		
 	}
-	public function throttle()
+	public function activate()
 	{
 		
-	}	
+	}
+	public function deactivate()
+	{
+		
+	}
+	
 }
 
 
