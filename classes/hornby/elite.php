@@ -23,12 +23,13 @@ class hornby_elite
 	{
 		if($device !== NULL)
 		{
-			$this->set_device();
+			$this->set_device($device, $rate);
 		}
 		return $this;
 	}
-	public function set_device()
+	public function set_device($device=NULL, $rate=NULL)
 	{
+		$this->_device = new PHPSeria($device, $rate);
 		return $this;
 	}
 	
@@ -37,8 +38,8 @@ class hornby_elite
 		// Send 212100
 		//$data = array(0x21, 0x21, 0x00);
 		// First byte is the version
-		$message = bytearray('212100');
-		$response = $device->send($message->as_bin())->read();
+		$message = new bytearray('212100');
+		$response = $this->_device->send($message->as_bin())->read();
 		// If it is 010203, not init return false
 		$response = bytearray::factory()->from_bin($response);
 		$version = reset($response->as_array());
@@ -52,8 +53,8 @@ class hornby_elite
 	{
 		// Send 212405
 		// array(0x21,0x24,0x05);
-		$message = bytearray('212405');
-		$response = $device->send($message->as_bin())->read();
+		$message = new bytearray('212405');
+		$response = $this->_device->send($message->as_bin())->read();
 		// If it is 010203, not init return false
 		$response = bytearray::factory()->from_bin($response);
 		if($response->as_hex() == '010203')
@@ -74,14 +75,14 @@ class hornby_elite
 		//$data = array(0x3a, 0x36, 0x34, 0x4a, 0x4b, 0x44, 0x38, 0x39, 0x42, 0x53, 0x54, 0x39);
 		$message = new bytearray('3a36344a4b44383942535439');
 		// Recieve reply such as 35a3680bc56353
-		$response = $device->send($message->as_bin())->read();
+		$response = $this->_device->send($message->as_bin())->read();
 		// 35 at the start stays the same.
 		// Add 0x39 to each of the middle bytes to get 35dca144fe63
 		$response = bytearray::factory()->from_bin($response);
 		$message = $response->add('00393939393900');
 		$message->update_parity();
 		// Send it back
-		$response = $device->send($message)->read();
+		$response = $this->_device->send($message)->read();
 		// Should recieve 010405
 		// array(0x01, 0x04, 0x05);
 		if( $response->as_hex() != '010405')

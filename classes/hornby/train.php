@@ -95,7 +95,7 @@ class hornby_train
 		}
 		$message->set_byte(5, $movement);
 		$message->append_parity();
-		$response = $device->send($message->as_bin())->read();
+		$response = $this->_device->send($message->as_bin())->read();
 		return $this;
 	}
 	/**
@@ -124,7 +124,7 @@ class hornby_train
 		$this->_function_group[$this->_function_table[$num][1]] = $st;
 		$message->set_byte(5, $st);
 		$message->append_parity();
-		$response = $device->send($message->as_bin())->read();
+		$response = $this->_device->send($message->as_bin())->read();
 		return $this;
 	}
 }
