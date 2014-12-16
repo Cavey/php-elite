@@ -29,7 +29,7 @@ class hornby_elite
 	}
 	public function set_device($device=NULL, $rate=NULL)
 	{
-		$this->_device = new PHPSeria($device, $rate);
+		$this->_device = new PHPSerial($device, $rate);
 		return $this;
 	}
 	
